@@ -328,3 +328,18 @@ svg.octicon.octicon-star.dashboard-event-icon {
 .gist table.lines {
 	tab-size: 4 !important;
 }
+
+/* styles for reaction avatars */
+.reaction-summary-item div,
+.reaction-summary-item div img {
+	display: inline-block;
+}
+
+.reaction-summary-item div img,
+.reaction-summary-item div span {
+	width: 20px;
+	height: 20px;
+	margin-left: 3px;
+	vertical-align: middle;
+}
+.reaction-summary-item div img {

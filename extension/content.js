@@ -307,6 +307,41 @@ $(document).on('keydown', event => {
 	}
 });
 
+function addReactionParticipants() {
+	$('.comment-reactions').each((index, reactionsContainer) => {
+		const $reactionsContainer = $(reactionsContainer);
+		if (!$reactionsContainer.hasClass('has-reactions')) {
+			return;
+		}
+
+		const $reactionButtons = $reactionsContainer.find('.comment-reactions-options .reaction-summary-item[aria-label]');
+
+		$reactionButtons.each((index, element) => {
+			const participantCount = Number(element.innerHTML.split('/g-emoji>')[1]);
+			const participants = element.getAttribute('aria-label')
+				.replace(/,? and /, ', ')
+				.replace(/, \d+ more/, '')
+				.split(', ');
+
+			if ($(element).find('div.participants-container').length === 0) {
+				$(element).append('<div class="participants-container">');
+			}
+
+			const firstThreeParticipants = participants.slice(0, 3);
+			const participantsContainer = $(element).find('.participants-container').get(0);
+			const remainder = participantCount - firstThreeParticipants.length;
+
+			for (const participant of firstThreeParticipants) {
+				$(participantsContainer).append(`<a href="/${participant}"><img src="https://github.com/${participant}.png"></a>`);
+			}
+
+			if (remainder > 0) {
+				$(participantsContainer).append(`<span>+${remainder}</span>`);
+			}
+		});
+	});
+}
+
 // Prompt user to confirm erasing a comment with the Cancel button
 $(document).on('click', event => {
 	// Check event.target instead of using a delegate, because Sprint doesn't support them
@@ -372,6 +407,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			if (pageDetect.isPR() || pageDetect.isIssue()) {
 				moveVotes();
 				linkifyIssuesInTitles();
+				addReactionParticipants();
 			}
 
 			if (pageDetect.isBlame()) {
