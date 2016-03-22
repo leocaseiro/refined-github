@@ -296,6 +296,36 @@ function markMergeCommitsInList() {
 	});
 }
 
+function addReactionParticipants() {
+	$('.comment-reactions').each((index, reactionsContainer) => {
+		const $reactionsContainer = $(reactionsContainer);
+		if (!$reactionsContainer.hasClass('has-reactions')) {
+			return;
+		}
+
+		const participants = new Set();
+
+		$reactionsContainer
+			.find('.comment-reactions-options .reaction-summary-item[aria-label]')
+			.each((index, element) => {
+				element.getAttribute('aria-label')
+					.replace(/,? and /, ', ')
+					.replace(/, \d+ more/, '')
+					.split(', ')
+						.map(username => {
+							participants.add(username);
+						});
+			});
+
+		const $participantsContainer = $('<div>');
+		for (let participant of participants) {
+			$participantsContainer.append(`<a href="/${participant}">${participant}</a> `);
+		}
+
+		$reactionsContainer.append($participantsContainer);
+	});
+}
+
 // Prompt user to confirm erasing a comment with the Cancel button
 $(document).on('click', event => {
 	// Check event.target instead of using a delegate, because Sprint doesn't support them
@@ -361,6 +391,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			if (isPR() || isIssue()) {
 				moveVotes();
 				linkifyIssuesInTitles();
+				addReactionParticipants();
 			}
 
 			if (isBlame()) {
