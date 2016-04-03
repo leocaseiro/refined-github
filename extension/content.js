@@ -42,6 +42,7 @@ function commentIsUseless(type, el) {
 		}
 	}
 
+
 	return false;
 }
 
