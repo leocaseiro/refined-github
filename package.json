@@ -1,8 +1,9 @@
 {
   "scripts": {
-    "test": "xo"
+    "test": "xo && ava"
   },
   "devDependencies": {
+    "ava": "^0.13.0",
     "xo": "*"
   },
   "xo": {
@@ -14,6 +15,14 @@
     ],
     "ignores": [
       "extension/vendor/**"
+    ]
+  },
+  "ava": {
+    "files": [
+      "tests/*.spec.js"
+    ],
+    "source": [
+      "extension/*.js"
     ]
   }
 }
