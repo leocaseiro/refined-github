@@ -9,6 +9,7 @@ const uselessContent = {
 	downvote: {text: ['-1\n'], emoji: [':-1:']}
 };
 
+
 function linkifyBranchRefs() {
 	$('.commit-ref').each((i, el) => {
 		const parts = $(el).find('.css-truncate-target');
