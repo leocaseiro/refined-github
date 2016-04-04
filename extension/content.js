@@ -317,6 +317,10 @@ function addReactionParticipants() {
 		const $reactionButtons = $reactionsContainer.find('.comment-reactions-options .reaction-summary-item[aria-label]');
 
 		$reactionButtons.each((index, element) => {
+			element.addEventListener('click', () => {
+				window.setTimeout(addReactionParticipants, 1000);
+			});
+
 			const participantCount = Number(element.innerHTML.split('/g-emoji>')[1]);
 			const participants = element.getAttribute('aria-label')
 				.replace(/,? and /, ', ')
@@ -330,6 +334,9 @@ function addReactionParticipants() {
 			const firstThreeParticipants = participants.slice(0, 3);
 			const participantsContainer = $(element).find('.participants-container').get(0);
 			const remainder = participantCount - firstThreeParticipants.length;
+
+			// clear any existing avatars and remainder count
+			participantsContainer.innerHTML = '';
 
 			for (const participant of firstThreeParticipants) {
 				$(participantsContainer).append(`<a href="/${participant}"><img src="https://github.com/${participant}.png"></a>`);
